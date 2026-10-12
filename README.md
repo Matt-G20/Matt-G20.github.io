@@ -1,6 +1,6 @@
 # P15 — Personal portfolio site without WordPress
 
-> **Status:** In progress · **Priority:** Must · **Build order:** 1 of 40 · **Estimate:** 5 days
+> **Status:** Live (only Git branch practice left) · **Priority:** Must · **Build order:** 1 of 40 · **Estimate:** 5 days
 > Personal / demo project — not client work.
 
 ## Problem
@@ -57,7 +57,7 @@ npm run check    # SEO checks on every built page (run after build)
 - [x] Site styling: one global stylesheet with design tokens (colours, type, spacing), responsive header menu
 - [x] Full home page: services summary, featured case studies, call to action
 - [x] 404 page and default Open Graph image
-- [ ] Re-measure Lighthouse on mobile after styling and update Results (first run: 100)
+- [x] Re-measure Lighthouse on mobile after styling and update Results
 
 ## Results
-Lighthouse mobile (2026-10-12, median of 3 runs): Performance 100, Accessibility 100, Best Practices 100, SEO 100 · LCP 1.1 s, CLS 0, TBT 40 ms. Live at https://matt-g20.github.io. Re-measure after adding styles and images.
+Lighthouse mobile on the live site with full design (2026-10-12, median of 3 runs): Performance 100, Accessibility 100, Best Practices 100, SEO 100 · LCP 1.3 s, CLS 0, TBT 30 ms. Live at https://matt-g20.github.io.

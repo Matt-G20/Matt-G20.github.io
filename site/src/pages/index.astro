@@ -1,6 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { GITHUB_URL } from '../site';
+import { getVisibleCaseStudies } from '../lib/case-studies';
+
+// Up to three case studies for the "Featured" section.
+const featured = (await getVisibleCaseStudies()).slice(0, 3);
+
+// Short service summaries; the full text is on /services/.
+const SERVICES = [
+  { title: 'Design', text: 'Figma layouts planned around search intent, mapped to Elementor global styles.' },
+  { title: 'WordPress', text: 'Fast Elementor and WooCommerce builds, multilingual sites and speed optimisation.' },
+  { title: 'SEO', text: 'Keyword research, site architecture, on-page SEO, schema and monthly reporting.' },
+  { title: 'QA', text: 'Pre-launch checks for forms, indexing, broken links, accessibility and mobile layout.' },
+  { title: 'Automation', text: 'Python tools and CI tests that catch SEO and speed problems after every deploy.' },
+];
 
 // Title and description come from site-plan.md.
 const title = 'SEO-First WordPress Websites for B2B — Matin';
@@ -34,6 +47,63 @@ const schema = [
 ---
 
 <BaseLayout title={title} description={description} schema={schema}>
-  <h1>SEO-first WordPress websites for B2B companies</h1>
-  <p>Design, build, SEO and QA — one process, one owner.</p>
+  <section class="hero">
+    <h1>SEO-first WordPress websites for B2B companies</h1>
+    <p class="lead">
+      Design, build, SEO and QA in one process — so your site loads fast,
+      ranks on Google and launches without surprises.
+    </p>
+    <p class="actions">
+      <a class="button" href="/contact/">Book a call</a>
+      <a href="/case-studies/">See the case studies →</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>What I do</h2>
+    <ul class="card-list card-grid">
+      {SERVICES.map((service) => (
+        <li class="card">
+          <h3>{service.title}</h3>
+          <p>{service.text}</p>
+        </li>
+      ))}
+    </ul>
+    <p><a href="/services/">All services →</a></p>
+  </section>
+
+  <section>
+    <h2>Featured case studies</h2>
+    {featured.length === 0 ? (
+      <p>
+        The first case studies are being written. Each one shows the problem,
+        the approach and a measured result.
+      </p>
+    ) : (
+      <ul class="card-list">
+        {featured.map((study) => (
+          <li class="card">
+            <h3><a href={`/case-studies/${study.id}/`}>{study.data.title}</a></h3>
+            <p>{study.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  <section>
+    <h2>How I work</h2>
+    <ol>
+      <li><strong>Plan:</strong> goals, keywords and page structure in writing.</li>
+      <li><strong>Design and build:</strong> reusable components, so changes stay fast.</li>
+      <li><strong>Optimise:</strong> on-page SEO, schema and speed, measured before and after.</li>
+      <li><strong>Check:</strong> automated QA before launch — no forgotten <code>noindex</code>.</li>
+    </ol>
+  </section>
+
+  <section class="cta card">
+    <h2>Have a website or SEO goal?</h2>
+    <p>Tell me where you are and where you want to be. I reply within two working days.</p>
+    <p><a class="button" href="/contact/">Book a call</a></p>
+  </section>
 </BaseLayout>

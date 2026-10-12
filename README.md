@@ -52,9 +52,12 @@ npm run check    # SEO checks on every built page (run after build)
 - [x] Add a case-study content collection using content-templates/case-study.md
 - [x] Add SEO basics: title/meta per page, sitemap, robots.txt, Person + ProfessionalService schema
 - [x] Build the pages from site-plan.md (case-study list + detail, services, about, contact) on BaseLayout
-- [ ] Deploy to GitHub Pages (https://matt-g20.github.io) via GitHub Actions
+- [x] Deploy to GitHub Pages (https://matt-g20.github.io) via GitHub Actions
 - [ ] Later: buy a domain, connect it and update `site` in astro.config.mjs
-- [ ] Measure Lighthouse on mobile and record it in Results
+- [x] Site styling: one global stylesheet with design tokens (colours, type, spacing), responsive header menu
+- [x] Full home page: services summary, featured case studies, call to action
+- [x] 404 page and default Open Graph image
+- [ ] Re-measure Lighthouse on mobile after styling and update Results (first run: 100)
 
 ## Results
-_TODO: one measurable line, e.g. "Lighthouse mobile performance 9X, LCP X.Xs"._
+Lighthouse mobile (2026-10-12, median of 3 runs): Performance 100, Accessibility 100, Best Practices 100, SEO 100 · LCP 1.1 s, CLS 0, TBT 40 ms. Live at https://matt-g20.github.io. Re-measure after adding styles and images.

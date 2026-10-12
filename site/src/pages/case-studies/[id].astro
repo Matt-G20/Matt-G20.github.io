@@ -22,7 +22,7 @@ const { Content } = await render(study);
   <article>
     <p><a href="/case-studies/">← All case studies</a></p>
     <h1>{study.data.title}</h1>
-    <p>{study.data.description}</p>
+    <p class="lead">{study.data.description}</p>
     <Content />
   </article>
 </BaseLayout>

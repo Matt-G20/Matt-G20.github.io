@@ -24,12 +24,21 @@ for (const file of pages) {
   const desc = decode(html.match(/<meta name="description" content="(.*?)"/)?.[1] ?? '');
   const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
   const canonical = html.match(/<link rel="canonical" href="(.*?)"/)?.[1];
+  const noindex = html.includes('<meta name="robots" content="noindex"');
+  const ogImage = html.match(/<meta property="og:image" content="(.*?)"/)?.[1];
   if (!title || title.length > 60) fail(page, `title length ${title.length}`);
   if (!desc || desc.length > 155) fail(page, `description length ${desc.length}`);
   if (h1s !== 1) fail(page, `${h1s} h1 tags`);
-  if (!canonical || !canonical.endsWith(page)) fail(page, `canonical ${canonical}`);
-  if (!html.includes('aria-current="page"')) fail(page, 'no active menu item');
-  for (const [, href] of html.matchAll(/<a href="(\/[^"#]*)"/g)) {
+  // A noindex page (e.g. 404) has no canonical and no menu item of its own.
+  if (!noindex) {
+    if (!canonical || !canonical.endsWith(page)) fail(page, `canonical ${canonical}`);
+    if (!html.includes('aria-current="page"')) fail(page, 'no active menu item');
+  }
+  if (!ogImage || !fs.existsSync(path.join(dist, new URL(ogImage).pathname))) {
+    fail(page, `og:image missing or file not found: ${ogImage}`);
+  }
+  // Any <a> tag, whatever attributes come before href.
+  for (const [, href] of html.matchAll(/<a\b[^>]*\shref="(\/[^"#]*)"/g)) {
     const target = path.join(dist, href, href.endsWith('/') ? 'index.html' : '');
     if (!fs.existsSync(target)) fail(page, `broken link ${href}`);
   }

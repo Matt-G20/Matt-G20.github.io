@@ -14,9 +14,9 @@ const caseStudies = await getVisibleCaseStudies();
   {caseStudies.length === 0 ? (
     <p>The first case studies are on the way.</p>
   ) : (
-    <ul>
+    <ul class="card-list">
       {caseStudies.map((study) => (
-        <li>
+        <li class="card">
           <a href={`/case-studies/${study.id}/`}>{study.data.title}</a>
           {!study.data.published && <strong> (draft)</strong>}
           <p>{study.data.description}</p>

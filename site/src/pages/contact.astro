@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT_EMAIL } from '../site';
+---
+
+<BaseLayout
+  title="Contact — Start Your Website or SEO Project"
+  description="Tell me about your website or SEO goal and get a reply within two working days."
+>
+  <h1>Contact</h1>
+  <p>Tell me about your website or SEO goal. I reply within two working days.</p>
+  <p>
+    Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </p>
+  <p>Helpful to include: your site URL, what you want to improve and your timeline.</p>
+</BaseLayout>

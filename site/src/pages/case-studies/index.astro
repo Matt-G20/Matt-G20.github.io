@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getVisibleCaseStudies } from '../../lib/case-studies';
+
+const caseStudies = await getVisibleCaseStudies();
+---
+
+<BaseLayout
+  title="Case Studies — SEO, WordPress and QA Projects"
+  description="Real projects with the problem, the approach and measurable results: design, WordPress builds, SEO and QA."
+>
+  <h1>Case studies</h1>
+
+  {caseStudies.length === 0 ? (
+    <p>The first case studies are on the way.</p>
+  ) : (
+    <ul>
+      {caseStudies.map((study) => (
+        <li>
+          <a href={`/case-studies/${study.id}/`}>{study.data.title}</a>
+          {!study.data.published && <strong> (draft)</strong>}
+          <p>{study.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

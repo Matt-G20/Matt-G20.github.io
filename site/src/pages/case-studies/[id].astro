@@ -1,0 +1,28 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getVisibleCaseStudies } from '../../lib/case-studies';
+
+// Static site: Astro must know every URL at build time.
+// One page is built for each visible case study.
+export async function getStaticPaths() {
+  const caseStudies = await getVisibleCaseStudies();
+  return caseStudies.map((study) => ({
+    params: { id: study.id },
+    props: { study },
+  }));
+}
+
+const { study } = Astro.props;
+// Turns the Markdown body into HTML.
+const { Content } = await render(study);
+---
+
+<BaseLayout title={study.data.title} description={study.data.description}>
+  <article>
+    <p><a href="/case-studies/">← All case studies</a></p>
+    <h1>{study.data.title}</h1>
+    <p>{study.data.description}</p>
+    <Content />
+  </article>
+</BaseLayout>

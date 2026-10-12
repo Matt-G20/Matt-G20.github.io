@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { GITHUB_URL } from '../site';
+
+// Title and description come from site-plan.md.
+const title = 'SEO-First WordPress Websites for B2B — Matin';
+const description =
+  'I design, build and optimise WordPress sites for B2B companies: SEO, speed and QA in one process. See the case studies.';
+
+const siteURL = Astro.site?.href;
+
+// Person + ProfessionalService (schema.org) tell search engines who runs
+// the site and what service is offered. The @id values link the two.
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${siteURL}#person`,
+    name: 'Matin',
+    jobTitle: 'SEO and WordPress Specialist',
+    url: siteURL,
+    sameAs: [GITHUB_URL],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${siteURL}#service`,
+    name: 'Matin — SEO-First WordPress Websites',
+    description,
+    url: siteURL,
+    founder: { '@id': `${siteURL}#person` },
+  },
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <h1>SEO-first WordPress websites for B2B companies</h1>
+  <p>Design, build, SEO and QA — one process, one owner.</p>
+</BaseLayout>

@@ -1,0 +1,66 @@
+---
+// Shared HTML shell for every page: one place for title, meta and canonical.
+import { CONTACT_EMAIL, NAV_LINKS } from '../site';
+
+interface Props {
+  title: string;
+  description: string;
+  // Optional JSON-LD objects; each is printed in its own script tag.
+  schema?: object[];
+}
+
+const { title, description, schema = [] } = Astro.props;
+
+// Astro.site comes from `site` in astro.config.mjs.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// A menu item is active on its own page and on pages under it
+// (e.g. "Case studies" stays active on a single case study).
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Open Graph: how the page looks when shared on LinkedIn and others -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+
+    {schema.map((item) => (
+      <script type="application/ld+json" set:html={JSON.stringify(item)} />
+    ))}
+  </head>
+  <body>
+    <header>
+      <nav aria-label="Main">
+        {NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <p><a href="/contact/">Book a call</a> · <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
+    </footer>
+  </body>
+</html>

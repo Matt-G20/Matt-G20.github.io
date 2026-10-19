@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+
+const {
+  title = 'Have a website or SEO goal?',
+  text = 'Tell me where you are and where you want to be. I reply within two working days with next steps.',
+} = Astro.props;
+---
+
+<section class="section" aria-label="Contact">
+  <div class="container">
+    <div class="cta-band">
+      <h2>{title}</h2>
+      <p>{text}</p>
+      <div class="actions">
+        <a class="button button--light" href="/contact/">Book a call <Icon name="arrow-right" size={18} /></a>
+      </div>
+    </div>
+  </div>
+</section>

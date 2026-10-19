@@ -1,16 +1,73 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 import { CONTACT_EMAIL } from '../site';
+
+const INCLUDE = [
+  'Your website address (or "new site")',
+  'What you want to improve: design, speed, rankings or a full rebuild',
+  'Your timeline and any deadline',
+];
+const NEXT = [
+  { icon: 'clock', text: 'I reply within two working days.' },
+  { icon: 'message', text: 'A short call about your goals and your current site.' },
+  { icon: 'list', text: 'A written plan with scope and next steps.' },
+] as const;
 ---
 
 <BaseLayout
   title="Contact — Start Your Website or SEO Project"
   description="Tell me about your website or SEO goal and get a reply within two working days."
 >
-  <h1>Contact</h1>
-  <p class="lead">Tell me about your website or SEO goal. I reply within two working days.</p>
-  <p>
-    <a class="button" href={`mailto:${CONTACT_EMAIL}`}>Email {CONTACT_EMAIL}</a>
-  </p>
-  <p>Helpful to include: your site URL, what you want to improve and your timeline.</p>
+  <section class="page-head">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1>Let's talk about your website</h1>
+      <p class="lead">Tell me about your website or SEO goal. I reply within two working days.</p>
+    </div>
+  </section>
+
+  <section class="section pt-0" aria-label="How to reach me">
+    <div class="container grid grid--2">
+      <div class="card contact-card">
+        <span class="icon-tile mb-0"><Icon name="mail" /></span>
+        <div>
+          <p class="eyebrow mb-2">Email</p>
+          <p class="contact-email">{CONTACT_EMAIL}</p>
+        </div>
+        <div class="actions">
+          <a class="button" href={`mailto:${CONTACT_EMAIL}`}>Write an email <Icon name="arrow-right" size={18} /></a>
+          <button class="button button--ghost" type="button" data-copy={CONTACT_EMAIL}>
+            <Icon name="copy" size={18} /> <span data-copy-label>Copy address</span>
+          </button>
+        </div>
+      </div>
+      <div class="card contact-card">
+        <h2 class="h3">Helpful to include</h2>
+        <ul class="check-list">
+          {INCLUDE.map((item) => <li><Icon name="check" size={18} /> {item}</li>)}
+        </ul>
+        <h2 class="h3">What happens next</h2>
+        <ul class="check-list">
+          {NEXT.map((item) => <li><Icon name={item.icon} size={18} /> {item.text}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<script is:inline>
+  // "Copy address" button: copies the email and confirms for two seconds.
+  document.querySelectorAll('[data-copy]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const label = button.querySelector('[data-copy-label]');
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy);
+        label.textContent = 'Copied!';
+      } catch {
+        label.textContent = 'Press Ctrl+C';
+      }
+      setTimeout(() => (label.textContent = 'Copy address'), 2000);
+    });
+  });
+</script>

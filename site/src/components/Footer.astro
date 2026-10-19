@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro';
+import { CONTACT_EMAIL, NAV_LINKS, POSITIONING, PROFILES, SITE_NAME } from '../site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand__mark" aria-hidden="true">M</span>
+          <span>{SITE_NAME}</span>
+        </a>
+        <p class="footer-blurb">{POSITIONING}</p>
+        <a class="button button--small" href="/contact/">Book a call <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <div>
+        <h2>Pages</h2>
+        <ul>
+          {NAV_LINKS.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href={`mailto:${CONTACT_EMAIL}`}><Icon name="mail" size={18} /> Email</a></li>
+          {PROFILES.map((profile) => (
+            <li>
+              <a href={profile.href} rel="me noopener" target="_blank">
+                <Icon name={profile.icon as 'github'} size={18} /> {profile.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {year} {SITE_NAME}. Personal portfolio.</span>
+      <span>Built with Astro · static, fast, no tracking</span>
+    </div>
+  </div>
+</footer>

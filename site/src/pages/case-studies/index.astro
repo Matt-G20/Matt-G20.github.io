@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
 import { getVisibleCaseStudies } from '../../lib/case-studies';
 
 const caseStudies = await getVisibleCaseStudies();
@@ -9,19 +11,28 @@ const caseStudies = await getVisibleCaseStudies();
   title="Case Studies — SEO, WordPress and QA Projects"
   description="Real projects with the problem, the approach and measurable results: design, WordPress builds, SEO and QA."
 >
-  <h1>Case studies</h1>
+  <section class="page-head">
+    <div class="container">
+      <p class="eyebrow">Case studies</p>
+      <h1>Projects with the numbers to back them</h1>
+      <p class="lead">
+        Personal and demo projects across design, WordPress, SEO and QA. Every result comes from a real, documented run —
+        no estimates.
+      </p>
+    </div>
+  </section>
 
-  {caseStudies.length === 0 ? (
-    <p>The first case studies are on the way.</p>
-  ) : (
-    <ul class="card-list">
-      {caseStudies.map((study) => (
-        <li class="card">
-          <a href={`/case-studies/${study.id}/`}>{study.data.title}</a>
-          {!study.data.published && <strong> (draft)</strong>}
-          <p>{study.data.description}</p>
-        </li>
-      ))}
-    </ul>
-  )}
+  <section class="section pt-0" aria-label="All case studies">
+    <div class="container">
+      {caseStudies.length === 0 ? (
+        <div class="empty-state">The first case studies are on the way.</div>
+      ) : (
+        <div class="grid grid--3">
+          {caseStudies.map((study) => <CaseStudyCard study={study} headingLevel="h2" />)}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <CtaBand />
 </BaseLayout>

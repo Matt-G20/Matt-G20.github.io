@@ -1,20 +1,68 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { PHOTO } from '../site';
+
+const VALUES = [
+  { icon: 'gauge', title: 'Measure, don\'t guess', text: 'Every claim about speed, rankings or quality comes from a real tool run.' },
+  { icon: 'list', title: 'Checklists over memory', text: 'Launches follow a written checklist, so nothing depends on a good day.' },
+  { icon: 'terminal', title: 'Automate the boring checks', text: 'Scripts check what people forget: noindex, canonicals, broken links, speed.' },
+  { icon: 'message', title: 'Explain every decision', text: 'You get the why behind each recommendation, in plain language.' },
+] as const;
 ---
 
 <BaseLayout
   title="About Matin — SEO and WordPress Specialist"
   description="Freelance SEO and WordPress specialist with an industrial engineering background and a process-first way of working."
 >
-  <h1>About</h1>
-  <p class="lead">I'm Matin, a freelance SEO and WordPress (Elementor) specialist.</p>
-  <p>
-    My background is industrial engineering, so I treat a website like a production line:
-    clear steps, checklists, measurements and automated checks instead of guesswork.
-  </p>
-  <p>
-    I write small Python tools to audit and test sites, so problems like a forgotten
-    <code>noindex</code> or a broken canonical are caught before they cost traffic.
-  </p>
-  <p><a href="/case-studies/">See the case studies</a> or <a href="/contact/">book a call</a>.</p>
+  <section class="page-head">
+    <div class="container about-grid">
+      <div>
+        {PHOTO ? (
+          <div class="portrait"><img src={PHOTO} alt="Matin" width="600" height="600" /></div>
+        ) : (
+          <div class="portrait portrait--monogram" aria-hidden="true">M</div>
+        )}
+      </div>
+      <div>
+        <p class="eyebrow">About</p>
+        <h1>I'm Matin — I build websites like a production line</h1>
+        <p class="lead">A freelance SEO and WordPress (Elementor) specialist with an industrial engineering background.</p>
+        <p>
+          Engineering taught me to treat work as a process: clear steps, checklists, measurements and automated checks
+          instead of guesswork. I bring the same habits to websites. A site is designed around search intent, built on
+          reusable components, optimised with numbers from real tools and checked automatically before and after launch.
+        </p>
+        <p>
+          I write small Python tools and CI tests to audit and test sites, so problems like a forgotten
+          <code>noindex</code>, a broken canonical or a slow new page are caught before they cost traffic.
+        </p>
+        <div class="actions mt-6">
+          <a class="button" href="/contact/">Book a call <Icon name="arrow-right" size={18} /></a>
+          <a class="button button--ghost" href="/case-studies/">See the case studies</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="values-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How I work</p>
+        <h2 id="values-title">Four habits behind every project</h2>
+      </div>
+      <div class="grid grid--4">
+        {VALUES.map((value) => (
+          <article class="card">
+            <span class="icon-tile"><Icon name={value.icon} /></span>
+            <h3>{value.title}</h3>
+            <p>{value.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
 </BaseLayout>

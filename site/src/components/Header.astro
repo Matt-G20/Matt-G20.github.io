@@ -1,0 +1,58 @@
+---
+// Sticky header. On phones the menu folds behind a button; without JavaScript
+// the links simply wrap below the logo, so the site is never unusable.
+import Icon from './Icon.astro';
+import { NAV_LINKS, SITE_NAME } from '../site';
+
+// A menu item is active on its own page and on pages under it
+// (e.g. "Case studies" stays active on a single case study).
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a class="brand" href="/">
+      <span class="brand__mark" aria-hidden="true">M</span>
+      <span>{SITE_NAME}</span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        {NAV_LINKS.map((link) => (
+          <li>
+            <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a class="button button--small header-cta" href="/contact/">Book a call</a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu" data-menu-button>
+      <Icon name="menu" class="icon-menu" />
+      <Icon name="close" class="icon-close" />
+    </button>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const header = document.querySelector('[data-header]');
+    const button = header.querySelector('[data-menu-button]');
+    const setOpen = (open) => {
+      header.dataset.open = String(open);
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+    button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+    header.querySelector('#site-nav').addEventListener('click', (event) => {
+      if (event.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && header.dataset.open === 'true') {
+        setOpen(false);
+        button.focus();
+      }
+    });
+  })();
+</script>

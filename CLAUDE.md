@@ -10,13 +10,21 @@ Priority: Must · build order 1 of 40 · estimate 5 days. Personal / demo projec
 ## Related projects
 Every finished case study is published here.
 
+## Code map
+- `site/src/styles/global.css` — the design system (tokens light + dark, components, sections). Change tokens, not individual pages.
+- `site/src/components/` — Header (phone menu), Footer, CaseStudyCard, CtaBand, Icon (inline Lucide SVGs).
+- `site/src/content/case-studies/*.md` — one file per case study; schema in `site/src/content.config.ts`. Only `published: true` entries go live; `metrics` must come from real runs.
+- `site/src/site.ts` — name, email, profiles, photo and Search Console code (Matin's TODOs live here).
+- `design/` — sources for the OG image and favicons.
+- The hero panel on the home page shows real results from P6, P13 and Q1 runs (dated); update it when the tools are re-run.
+
 ## Commands
 Setup:
 Requires Node.js 22.12+.
 
 ```bash
-npm create astro@latest site
 cd site
+npm install
 npm run dev
 ```
 The Astro project lives in `site/`; planning files stay at the root. `.github/workflows/deploy.yml` builds `site/`, runs the SEO check and publishes to GitHub Pages on every push to `main`.

@@ -1,24 +1,58 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { GITHUB_URL } from '../site';
-import { getVisibleCaseStudies } from '../lib/case-studies';
-
-// Up to three case studies for the "Featured" section.
-const featured = (await getVisibleCaseStudies()).slice(0, 3);
-
-// Short service summaries; the full text is on /services/.
-const SERVICES = [
-  { title: 'Design', text: 'Figma layouts planned around search intent, mapped to Elementor global styles.' },
-  { title: 'WordPress', text: 'Fast Elementor and WooCommerce builds, multilingual sites and speed optimisation.' },
-  { title: 'SEO', text: 'Keyword research, site architecture, on-page SEO, schema and monthly reporting.' },
-  { title: 'QA', text: 'Pre-launch checks for forms, indexing, broken links, accessibility and mobile layout.' },
-  { title: 'Automation', text: 'Python tools and CI tests that catch SEO and speed problems after every deploy.' },
-];
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { getFeaturedCaseStudies } from '../lib/case-studies';
+import { PROFILES } from '../site';
 
 // Title and description come from site-plan.md.
 const title = 'SEO-First WordPress Websites for B2B — Matin';
 const description =
   'I design, build and optimise WordPress sites for B2B companies: SEO, speed and QA in one process. See the case studies.';
+
+const featured = await getFeaturedCaseStudies(3);
+
+const SERVICES = [
+  {
+    icon: 'design',
+    title: 'Design',
+    text: 'Figma layouts planned around search intent, with tokens mapped to Elementor global styles.',
+  },
+  {
+    icon: 'wordpress',
+    title: 'WordPress',
+    text: 'Fast Elementor and WooCommerce builds, multilingual sites and speed optimisation.',
+  },
+  {
+    icon: 'seo',
+    title: 'SEO',
+    text: 'Keyword research, site architecture, on-page SEO, schema and monthly reporting.',
+  },
+  {
+    icon: 'qa',
+    title: 'QA',
+    text: 'Pre-launch checks for indexing, broken links, forms, accessibility and mobile layout.',
+    wide: true,
+  },
+  {
+    icon: 'automation',
+    title: 'Automation',
+    text: 'Python tools and CI tests that catch SEO and speed regressions after every deploy — the part most agencies skip.',
+    wide: true,
+    feature: true,
+  },
+] as const;
+
+const STEPS = [
+  { title: 'Plan', text: 'Goals, keywords and page structure in writing before any design.' },
+  { title: 'Design & build', text: 'Reusable components and global styles, so changes stay fast and consistent.' },
+  { title: 'Optimise', text: 'On-page SEO, schema and Core Web Vitals, measured before and after.' },
+  { title: 'Check & monitor', text: 'Automated QA before launch, then daily SEO and speed checks.' },
+];
+
+const TOOLS = ['WordPress', 'Elementor', 'WooCommerce', 'Figma', 'Python', 'GitHub Actions', 'Lighthouse CI',
+  'Search Console', 'GA4', 'Looker Studio', 'Astro'];
 
 const siteURL = Astro.site?.href;
 
@@ -32,7 +66,7 @@ const schema = [
     name: 'Matin',
     jobTitle: 'SEO and WordPress Specialist',
     url: siteURL,
-    sameAs: [GITHUB_URL],
+    sameAs: PROFILES.map((profile) => profile.href),
   },
   {
     '@context': 'https://schema.org',
@@ -42,68 +76,120 @@ const schema = [
     description,
     url: siteURL,
     founder: { '@id': `${siteURL}#person` },
+    knowsAbout: ['Search engine optimization', 'WordPress', 'Elementor', 'Website QA', 'Core Web Vitals'],
   },
 ];
 ---
 
 <BaseLayout title={title} description={description} schema={schema}>
   <section class="hero">
-    <h1>SEO-first WordPress websites for B2B companies</h1>
-    <p class="lead">
-      Design, build, SEO and QA in one process — so your site loads fast,
-      ranks on Google and launches without surprises.
-    </p>
-    <p class="actions">
-      <a class="button" href="/contact/">Book a call</a>
-      <a href="/case-studies/">See the case studies →</a>
-    </p>
-  </section>
-
-  <section>
-    <h2>What I do</h2>
-    <ul class="card-list card-grid">
-      {SERVICES.map((service) => (
-        <li class="card">
-          <h3>{service.title}</h3>
-          <p>{service.text}</p>
-        </li>
-      ))}
-    </ul>
-    <p><a href="/services/">All services →</a></p>
-  </section>
-
-  <section>
-    <h2>Featured case studies</h2>
-    {featured.length === 0 ? (
-      <p>
-        The first case studies are being written. Each one shows the problem,
-        the approach and a measured result.
+    <div class="container hero__grid">
+     <div>
+      <p class="hero__pill"><b>B2B</b> SEO + WordPress, from design to launch</p>
+      <h1>SEO-first WordPress websites for <span class="gradient-text">B2B companies</span></h1>
+      <p class="lead">
+        I design, build and optimise WordPress sites in one process — design, Elementor build, technical SEO and QA — and
+        back every launch with automated checks, so your site loads fast, ranks and launches without surprises.
       </p>
-    ) : (
-      <ul class="card-list">
-        {featured.map((study) => (
-          <li class="card">
-            <h3><a href={`/case-studies/${study.id}/`}>{study.data.title}</a></h3>
-            <p>{study.data.description}</p>
+      <div class="actions">
+        <a class="button" href="/contact/">Book a call <Icon name="arrow-right" size={18} /></a>
+        <a class="button button--ghost" href="/case-studies/">See the case studies</a>
+      </div>
+      <ul class="proof" aria-label="How I work">
+        <li><Icon name="check-circle" size={20} /> Lighthouse-tested, fast static pages</li>
+        <li><Icon name="check-circle" size={20} /> Automated SEO and QA checks on every launch</li>
+        <li><Icon name="check-circle" size={20} /> Industrial-engineering process</li>
+      </ul>
+     </div>
+
+     <!-- Real results of my own tools on this site (P6 audit, P13 tests, Q1 QA), 19 Oct 2026.
+          Update the numbers whenever the tools are re-run. -->
+     <div class="hero-panel">
+      <div class="panel-card">
+        <p class="panel-head"><span class="live-dot"></span> My tools, run on this site <time datetime="2026-10-19">Oct 2026</time></p>
+        <div class="panel-score">
+          <div class="ring"><span>100</span></div>
+          <div>
+            <strong>SEO audit score</strong>
+            <span>5 pages · 0 issues found</span>
+          </div>
+        </div>
+        <ul class="panel-list">
+          <li><Icon name="check" size={18} /> No staging noindex left <b>PASS</b></li>
+          <li><Icon name="check" size={18} /> Canonical on every page <b>PASS</b></li>
+          <li><Icon name="check" size={18} /> robots.txt + sitemap <b>PASS</b></li>
+          <li><Icon name="check" size={18} /> SEO regression tests 9/9 <b>PASS</b></li>
+        </ul>
+      </div>
+      <div class="panel-card panel-card--float">
+        <span class="icon-tile"><Icon name="qa" size={20} /></span>
+        <div>Pre-launch QA <span>23 pass · 0 fail</span></div>
+      </div>
+     </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What I do</p>
+        <h2 id="services-title">Everything a B2B website needs, in one process</h2>
+        <p>One owner from the first sketch to a site that ranks — each step checked before the next one starts.</p>
+      </div>
+      <div class="bento">
+        {SERVICES.map((service) => (
+          <article class:list={['card', { 'bento--wide': 'wide' in service, 'bento--feature card--feature': 'feature' in service }]}>
+            <span class="icon-tile"><Icon name={service.icon} /></span>
+            <h3>{service.title}</h3>
+            <p>{service.text}</p>
+          </article>
+        ))}
+      </div>
+      <p class="mt-6"><a class="button button--ghost" href="/services/">All services <Icon name="arrow-right" size={18} /></a></p>
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="work-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Selected work</p>
+        <h2 id="work-title">Case studies with measured results</h2>
+        <p>Each one shows the problem, the approach and numbers from a real run.</p>
+      </div>
+      {featured.length === 0 ? (
+        <div class="empty-state">The first case studies are being written. Each will show the problem, the approach and a measured result.</div>
+      ) : (
+        <div class="grid grid--3">
+          {featured.map((study) => <CaseStudyCard study={study} />)}
+        </div>
+      )}
+      <p class="mt-6"><a class="button button--ghost" href="/case-studies/">All case studies <Icon name="arrow-right" size={18} /></a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How I work</p>
+        <h2 id="process-title">A website built like a production line</h2>
+        <p>Clear steps, checklists and measurements — the habits of industrial engineering applied to the web.</p>
+      </div>
+      <ol class="steps">
+        {STEPS.map((step) => (
+          <li>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
           </li>
         ))}
-      </ul>
-    )}
+      </ol>
+      <div class="mt-7">
+        <p class="eyebrow">Tools I use every week</p>
+        <ul class="chips">
+          {TOOLS.map((tool) => <li class="chip">{tool}</li>)}
+        </ul>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>How I work</h2>
-    <ol>
-      <li><strong>Plan:</strong> goals, keywords and page structure in writing.</li>
-      <li><strong>Design and build:</strong> reusable components, so changes stay fast.</li>
-      <li><strong>Optimise:</strong> on-page SEO, schema and speed, measured before and after.</li>
-      <li><strong>Check:</strong> automated QA before launch — no forgotten <code>noindex</code>.</li>
-    </ol>
-  </section>
-
-  <section class="cta card">
-    <h2>Have a website or SEO goal?</h2>
-    <p>Tell me where you are and where you want to be. I reply within two working days.</p>
-    <p><a class="button" href="/contact/">Book a call</a></p>
-  </section>
+  <CtaBand />
 </BaseLayout>

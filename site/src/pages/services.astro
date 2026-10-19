@@ -1,39 +1,136 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+
+const SERVICES = [
+  {
+    icon: 'design',
+    title: 'Website design',
+    text: 'Page layouts planned around search intent: heading structure, keyword zones and calls to action from the first draft.',
+    points: ['Figma UI kit with design tokens', 'SEO-first landing pages', 'Redesigns with a measured audit first'],
+  },
+  {
+    icon: 'wordpress',
+    title: 'WordPress build (Elementor)',
+    text: 'Fast, maintainable sites on a light theme with global styles, so later changes are quick and consistent.',
+    points: ['Reusable B2B service-site kit', 'WooCommerce and multilingual (EN/FA, RTL)', 'Migrations without losing rankings'],
+  },
+  {
+    icon: 'seo',
+    title: 'SEO',
+    text: 'Keyword research, site architecture, on-page optimisation, schema and technical audits.',
+    points: ['Keyword map and topic clusters', 'Content briefs and on-page checklists', 'Monthly reporting in Looker Studio'],
+  },
+  {
+    icon: 'gauge',
+    title: 'Speed optimisation',
+    text: 'Caching, modern image formats and removal of unused code, measured before and after every change.',
+    points: ['Core Web Vitals baseline', 'One change at a time, each measured', 'Daily Lighthouse CI monitoring'],
+  },
+  {
+    icon: 'qa',
+    title: 'Pre-launch QA',
+    text: 'A checklist plus automated checks for indexing settings, broken links, mixed content and mobile layout.',
+    points: ['PASS/FAIL report before go-live', 'No staging noindex left behind', 'Forms and email delivery tested'],
+  },
+  {
+    icon: 'automation',
+    title: 'SEO and QA automation',
+    text: 'Python tools and CI tests that check every key page after each deploy, so SEO and speed problems are caught in minutes, not weeks.',
+    points: ['SEO audit CLI (Excel + HTML reports)', 'SEO regression tests in GitHub Actions', 'Alerts when something breaks'],
+  },
+] as const;
+
+const STEPS = [
+  { title: 'Call', text: 'Your goals, audience and current site.' },
+  { title: 'Plan', text: 'Pages, keywords and scope in writing.' },
+  { title: 'Build & optimise', text: 'With a review at each step.' },
+  { title: 'QA, launch, monitor', text: 'Automated checks before and after go-live.' },
+];
+
+const FAQ = [
+  {
+    q: 'What do you need from me to start?',
+    a: 'Your goals, your current site if you have one, and access to Search Console and analytics. Before any design work you get a short written plan.',
+  },
+  {
+    q: 'Do you only build new websites?',
+    a: 'No. Audits, SEO fixes, speed optimisation and pre-launch QA on existing WordPress sites are separate services.',
+  },
+  {
+    q: 'Which tools do you use?',
+    a: 'WordPress with Elementor, Figma for design, Python and GitHub Actions for automated checks, Lighthouse for speed, and Search Console, GA4 and Looker Studio for measurement.',
+  },
+  {
+    q: 'How do you report results?',
+    a: 'With numbers from real tools - Search Console, GA4 and Lighthouse - plus a short analysis and the next three recommendations.',
+  },
+];
 ---
 
 <BaseLayout
   title="Services — WordPress Design, Build, SEO and QA"
   description="Website design, Elementor builds, technical SEO, speed optimisation and pre-launch QA for B2B service companies."
 >
-  <h1>Services</h1>
-  <p class="lead">One process from first sketch to a site that ranks — each step checked before the next one starts.</p>
+  <section class="page-head">
+    <div class="container">
+      <p class="eyebrow">Services</p>
+      <h1>Design, build, SEO and QA in one process</h1>
+      <p class="lead">One process from first sketch to a site that ranks — each step checked before the next one starts.</p>
+    </div>
+  </section>
 
-  <h2>Website design</h2>
-  <p>Page layouts planned around search intent: heading structure, keyword zones and calls to action from the first draft.</p>
+  <section class="section pt-0" aria-label="Services">
+    <div class="container">
+      <div class="grid grid--3">
+        {SERVICES.map((service) => (
+          <article class="card">
+            <span class="icon-tile"><Icon name={service.icon} /></span>
+            <h2 class="h3">{service.title}</h2>
+            <p>{service.text}</p>
+            <ul class="check-list">
+              {service.points.map((point) => <li><Icon name="check" size={18} /> {point}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  <h2>WordPress build (Elementor)</h2>
-  <p>Fast, maintainable sites on a light theme with global styles, so later changes are quick and consistent.</p>
+  <section class="section section--soft" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How we work</p>
+        <h2 id="process-title">Four steps, no surprises</h2>
+      </div>
+      <ol class="steps">
+        {STEPS.map((step) => (
+          <li>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 
-  <h2>SEO</h2>
-  <p>Keyword research, site architecture, on-page optimisation, schema and technical audits.</p>
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title">Questions clients ask first</h2>
+      </div>
+      <div class="faq">
+        {FAQ.map((item) => (
+          <details>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  <h2>Speed optimisation</h2>
-  <p>Caching, modern image formats and removal of unused code, measured before and after.</p>
-
-  <h2>Pre-launch QA</h2>
-  <p>A checklist plus automated checks for forms, indexing settings, broken links and mobile layout.</p>
-
-  <h2>SEO and QA automation</h2>
-  <p>Python tools and CI tests that check every key page after each deploy, so SEO and speed problems are caught in minutes, not weeks.</p>
-
-  <h2>How we work</h2>
-  <ol>
-    <li>Call: your goals, audience and current site.</li>
-    <li>Plan: pages, keywords and scope in writing.</li>
-    <li>Build and optimise, with a review at each step.</li>
-    <li>QA, launch and monitoring.</li>
-  </ol>
-
-  <p><a class="button" href="/contact/">Book a call</a></p>
+  <CtaBand />
 </BaseLayout>
